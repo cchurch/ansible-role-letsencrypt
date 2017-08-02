@@ -1,0 +1,29 @@
+---
+
+- hosts: all
+  vars:
+    webroot: /usr/share/nginx/html/
+    letsencrypt_domain: 'test.mydomain.com'
+    letsencrypt_account_key_path: '/etc/pki/tls/private/letsencrypt-account.key'
+    letsencrypt_key_path: '/etc/pki/tls/private/letsencrypt.key'
+    letsencrypt_csr_path: '/etc/pki/tls/misc/{{letsencrypt_domain}}.csr'
+    letsencrypt_crt_path: '/etc/pki/tls/certs/{{letsencrypt_domain}}.crt'
+    letsencrypt_acme_directory: '{{letsencrypt_acme_directory_production}}'
+  roles:
+    - role: cchurch.letsencrypt
+  handlers:
+    - name: create directories needed to fulfill letsencrypt challenge
+      file:
+        path: '{{webroot}}/{{letsencrypt_challenge["challenge_data"][letsencrypt_domain][letsencrypt_challenge_type]["resource"]|dirname}}'
+        state: directory
+      listen: fulfill letsencrypt challenge
+    - name: create file needed to fulfill letsencrypt challenge
+      copy:
+        content: '{{letsencrypt_challenge["challenge_data"][letsencrypt_domain][letsencrypt_challenge_type]["resource_value"]}}'
+        dest: '{{webroot}}/{{letsencrypt_challenge["challenge_data"][letsencrypt_domain][letsencrypt_challenge_type]["resource"]}}'
+      listen: fulfill letsencrypt challenge
+    - name: restart nginx when cert has been updated
+      service:
+        name: nginx
+        state: restarted
+      listen: letsencrypt challenge completed

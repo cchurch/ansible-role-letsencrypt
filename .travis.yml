@@ -1,0 +1,22 @@
+---
+
+sudo: required
+dist: trusty
+language: python
+python:
+  - "2.7"
+env:
+  matrix:
+    - ANSIBLE_VERSION_SPEC="ansible>=2.2,<2.3"
+    - ANSIBLE_VERSION_SPEC="ansible>=2.3,<2.4"
+
+before_install:
+  - sudo apt-get update -qq
+
+install:
+  - sudo apt-get install -y sshpass software-properties-common
+  - pip install $ANSIBLE_VERSION_SPEC
+  - ansible --version
+
+script:
+  - ansible-playbook -i tests/inventory tests/example.yml --syntax-check

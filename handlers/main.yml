@@ -1,0 +1,11 @@
+---
+
+- name: display letsencrypt challenge to be fulfilled
+  debug:
+    var: letsencrypt_challenge["challenge_data"][letsencrypt_domain][letsencrypt_challenge_type]
+  listen: fulfill letsencrypt challenge
+
+- name: display message when letsencrypt challenge completed
+  debug:
+    msg: 'letsencrypt cert updated in {{letsencrypt_crt_path}} for {{letsencrypt_domain}}.'
+  listen: letsencrypt challenge completed
