@@ -27,3 +27,5 @@ letsencrypt_challenge_type: 'http-01'
 letsencrypt_notify_fulfill: 'fulfill letsencrypt challenge'
 
 letsencrypt_notify_completed: 'letsencrypt challenge completed'
+
+letsencrypt_agreement: https://letsencrypt.org/documents/LE-SA-v1.2-November-15-2017.pdf

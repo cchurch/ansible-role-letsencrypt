@@ -48,6 +48,8 @@ role:
   `"{{letsencrypt_acme_directory_producion}}"` to generate a valid certificate.
 - `letsencrypt_challenge_type`: The challenge type for the Let's Encrypt
   request; default is `"http-01"`.
+- `letsencrypt_agreement`: The URI to the terms of service document; default is
+  `"https://letsencrypt.org/documents/LE-SA-v1.2-November-15-2017.pdf"`.
 
 The following variable may be defined for the play or role invocation (but not
 as an inventory group or host variable):
