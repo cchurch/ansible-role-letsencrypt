@@ -1,22 +1,49 @@
 ---
 
+if: branch = master
 sudo: required
-dist: trusty
+dist: bionic
 language: python
-python:
-  - "2.7"
 env:
-  matrix:
-    - ANSIBLE_VERSION_SPEC="ansible>=2.2,<2.3"
-    - ANSIBLE_VERSION_SPEC="ansible>=2.3,<2.4"
+  global:
+    - ANSIBLE_CONFIG=tests/ansible.cfg
+matrix:
+  include:
+    - python: "2.7"
+      env: 'ANSIBLE_VERSION="ansible~=2.4.0"'
+    - python: "3.7"
+      env: 'ANSIBLE_VERSION="ansible~=2.5.0"'
+    - python: "3.7"
+      env: 'ANSIBLE_VERSION="ansible~=2.6.0"'
+    - python: "3.7"
+      env: 'ANSIBLE_VERSION="ansible~=2.7.0"'
+    - python: "3.7"
+      env: 'ANSIBLE_VERSION="ansible~=2.8.0"'
+    - python: "3.7"
+      env: 'ANSIBLE_VERSION="ansible~=2.9.0"'
+    - python: "3.7"
+      env: 'ANSIBLE_VERSION="git+https://github.com/ansible/ansible.git@devel"'
+  allow_failures:
+    - python: "3.7"
+      env: 'ANSIBLE_VERSION="git+https://github.com/ansible/ansible.git@devel"'
 
 before_install:
   - sudo apt-get update -qq
 
 install:
   - sudo apt-get install -y sshpass software-properties-common
-  - pip install $ANSIBLE_VERSION_SPEC
+  - pip install $ANSIBLE_VERSION
+  - pip install ansible-lint
   - ansible --version
 
 script:
   - ansible-playbook -i tests/inventory tests/example.yml --syntax-check
+  - ansible-lint tests/example.yml
+
+notifications:
+  webhooks:
+    urls:
+      - https://galaxy.ansible.com/api/v1/notifications/
+    on_success: always
+    on_failure: never
+    on_start: never

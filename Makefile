@@ -1,31 +1,40 @@
-.PHONY: core-requirements update-pip-requirements requirements \
-	syntax-check clean-tox tox \
-	bump-major bump-minor bump-patch
-
+.PHONY: core-requirements
 core-requirements:
-	pip install "pip>=9,<9.1" setuptools "pip-tools>=1"
+	pip install pip setuptools pip-tools
 
+.PHONY: update-pip-requirements
 update-pip-requirements: core-requirements
-	pip install -U "pip>=9,<9.1" setuptools "pip-tools>=1"
+	pip install -U pip setuptools pip-tools
 	pip-compile -U requirements.in
 
+.PHONY: requirements
 requirements: core-requirements
 	pip-sync requirements.txt
 
+.PHONY: syntax-check
 syntax-check: requirements
-	ansible-playbook -i tests/inventory tests/example.yml --syntax-check
+	ANSIBLE_CONFIG=tests/ansible.cfg ansible-playbook -i tests/inventory tests/example.yml --syntax-check
 
+.PHONY: clean-tox
 clean-tox:
 	rm -rf .tox
 
+.PHONY: tox
 tox: requirements
 	tox
 
-bump-major:
+.PHONY: lint
+lint: requirements
+	ansible-lint tests/example.yml
+
+.PHONY: bump-major
+bump-major: requirements
 	bumpversion major
 
-bump-minor:
+.PHONY: bump-minor
+bump-minor: requirements
 	bumpversion minor
 
-bump-patch:
+.PHONY: bump-patch
+bump-patch: requirements
 	bumpversion patch

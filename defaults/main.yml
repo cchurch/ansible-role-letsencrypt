@@ -1,31 +1,31 @@
 ---
 
-letsencrypt_domain: ''
+letsencrypt_domain: ""
 
-letsencrypt_account_key_path: ''
+letsencrypt_account_key_path: ""
 
-letsencrypt_key_path: ''
+letsencrypt_key_path: ""
 
-letsencrypt_key_options: '2048'
+letsencrypt_key_options: "2048"
 
-letsencrypt_csr_path: ''
+letsencrypt_csr_path: ""
 
-letsencrypt_csr_subj: '/C=US/ST=Any/L=Wherever/O=Whatever/CN={{letsencrypt_domain}}'
+letsencrypt_csr_subj: "/C=US/ST=Any/L=Wherever/O=Whatever/CN={{ letsencrypt_domain }}"
 
-letsencrypt_crt_path: ''
+letsencrypt_crt_path: ""
 
-letsencrypt_account_email: ''
+letsencrypt_account_email: ""
 
 letsencrypt_acme_directory_staging: https://acme-staging.api.letsencrypt.org/directory
 
 letsencrypt_acme_directory_production: https://acme-v01.api.letsencrypt.org/directory
 
-letsencrypt_acme_directory: '{{letsencrypt_acme_directory_staging}}'
+letsencrypt_acme_directory: "{{ letsencrypt_acme_directory_staging }}"
 
-letsencrypt_challenge_type: 'http-01'
+letsencrypt_challenge_type: "http-01"
 
-letsencrypt_notify_fulfill: 'fulfill letsencrypt challenge'
+letsencrypt_notify_fulfill: "fulfill letsencrypt challenge"
 
-letsencrypt_notify_completed: 'letsencrypt challenge completed'
+letsencrypt_notify_completed: "letsencrypt challenge completed"
 
 letsencrypt_agreement: https://letsencrypt.org/documents/LE-SA-v1.2-November-15-2017.pdf
