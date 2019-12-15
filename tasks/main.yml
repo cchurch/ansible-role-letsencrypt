@@ -40,6 +40,7 @@
     acme_directory: "{{ letsencrypt_acme_directory | default(omit, true) }}"
     acme_version: "{{ letsencrypt_acme_version | default(omit, true) }}"
     agreement: "{{ letsencrypt_agreement | default(omit, true) }}"
+    terms_agreed: "{{ letsencrypt_terms_agreed | default(omit) }}"
   register: letsencrypt_challenge
   notify: "{{ letsencrypt_notify_fulfill }}"
 
@@ -57,6 +58,7 @@
     acme_directory: "{{ letsencrypt_acme_directory | default(omit, true) }}"
     acme_version: "{{ letsencrypt_acme_version | default(omit, true) }}"
     agreement: "{{ letsencrypt_agreement | default(omit, true) }}"
+    terms_agreed: "{{ letsencrypt_terms_agreed | default(omit) }}"
     data: "{{ letsencrypt_challenge }}"
   when: letsencrypt_challenge is changed
   notify: "{{ letsencrypt_notify_completed }}"

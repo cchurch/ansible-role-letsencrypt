@@ -53,6 +53,8 @@ role:
   request; default is `"http-01"`.
 - `letsencrypt_agreement`: The URI to the terms of service document; default is
   `"https://letsencrypt.org/documents/LE-SA-v1.2-November-15-2017.pdf"`.
+- `letsencrypt_terms_agreed`: Boolean indicating agreement to terms of service;
+  default is `true`, only valid when `letsencrypt_acme_version != "1"`.
 
 The following variable may be defined for the play or role invocation (but not
 as an inventory group or host variable):
