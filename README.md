@@ -47,6 +47,8 @@ role:
 - **`letsencrypt_acme_directory`**: The URL to use for Let's Encrypt requests;
   default is `"{{ letsencrypt_acme_directory_staging }}"`. Set to
   `"{{ letsencrypt_acme_directory_producion }}"` to generate a valid certificate.
+- `letsencrypt_acme_version`: The version of the ACME endpoint; default is to
+  use the module's default value. Only supported for Ansible 2.5 and later.
 - `letsencrypt_challenge_type`: The challenge type for the Let's Encrypt
   request; default is `"http-01"`.
 - `letsencrypt_agreement`: The URI to the terms of service document; default is
@@ -81,24 +83,24 @@ LetsEncrypt challenge, and generates/updates the resulting certificate:
     - hosts: all
       vars:
         webroot: /usr/share/nginx/html/
-        letsencrypt_domain: 'test.mydomain.com'
-        letsencrypt_account_key_path: '/etc/pki/tls/private/letsencrypt-account.key'
-        letsencrypt_key_path: '/etc/pki/tls/private/letsencrypt.key'
-        letsencrypt_csr_path: '/etc/pki/tls/misc/{{letsencrypt_domain}}.csr'
-        letsencrypt_crt_path: '/etc/pki/tls/certs/{{letsencrypt_domain}}.crt'
-        letsencrypt_acme_directory: '{{letsencrypt_acme_directory_production}}'
+        letsencrypt_domain: test.mydomain.com
+        letsencrypt_account_key_path: /etc/pki/tls/private/letsencrypt-account.key
+        letsencrypt_key_path: /etc/pki/tls/private/letsencrypt.key
+        letsencrypt_csr_path: /etc/pki/tls/misc/{{ letsencrypt_domain }}.csr
+        letsencrypt_crt_path: /etc/pki/tls/certs/{{ letsencrypt_domain }}.crt
+        letsencrypt_acme_directory: "{{ letsencrypt_acme_directory_production }}"
       roles:
         - role: cchurch.letsencrypt
       handlers:
         - name: create directories needed to fulfill letsencrypt challenge
           file:
-            path: '{{webroot}}/{{letsencrypt_challenge["challenge_data"][letsencrypt_domain][letsencrypt_challenge_type]["resource"]|dirname}}'
+            path: "{{ webroot }}/{{ letsencrypt_challenge['challenge_data'][letsencrypt_domain][letsencrypt_challenge_type]['resource'] | dirname }}"
             state: directory
           listen: fulfill letsencrypt challenge
         - name: create file needed to fulfill letsencrypt challenge
           copy:
-            content: '{{letsencrypt_challenge["challenge_data"][letsencrypt_domain][letsencrypt_challenge_type]["resource_value"]}}'
-            dest: '{{webroot}}/{{letsencrypt_challenge["challenge_data"][letsencrypt_domain][letsencrypt_challenge_type]["resource"]}}'
+            content: "{{ letsencrypt_challenge['challenge_data'][letsencrypt_domain][letsencrypt_challenge_type]['resource_value'] }}"
+            dest: "{{ webroot }}/{{ letsencrypt_challenge['challenge_data'][letsencrypt_domain][letsencrypt_challenge_type]['resource'] }}"
           listen: fulfill letsencrypt challenge
         - name: restart nginx when cert has been updated
           service:

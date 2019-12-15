@@ -22,6 +22,8 @@ letsencrypt_acme_directory_production: https://acme-v01.api.letsencrypt.org/dire
 
 letsencrypt_acme_directory: "{{ letsencrypt_acme_directory_staging }}"
 
+letsencrypt_acme_version: ""
+
 letsencrypt_challenge_type: "http-01"
 
 letsencrypt_notify_fulfill: "fulfill letsencrypt challenge"
