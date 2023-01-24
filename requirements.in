@@ -1,4 +1,4 @@
-ansible~=2.8.0
+ansible~=7.0.0
 ansible-lint
 bumpversion
 tox
